@@ -1,56 +1,56 @@
-<?php 
+<?php
+   $id = $_GET['id'];
+   $id = filter_var($id, FILTER_VALIDATE_INT);
+
    require 'includes/funciones.php';
    
    includeTemplate('header');
+
+   require 'includes/config/database.php';
+   $db = connDb();
+
+   $query = "SELECT * FROM propiedades WHERE id = $id";
+   $result = mysqli_query($db, $query);
+
+   if (!$result->num_rows) {
+      header("Location: index.php");
+   }
+   
+   $propiedad = mysqli_fetch_assoc($result);
 ?>
 
    <main class="contenedor seccion contenido-centrado">
-      <h1>Casa en venta frente al bosque</h1>
+      <h1><?php echo $propiedad['titulo'] ?></h1>
 
       <picture>
-         <source srcset="build/img/destacada.webp" type="image/webp">
-         <source srcset="build/img/destacada.jpeg" type="image/jpeg">
-
-         <img loading="lazy" src="build/img/destacada.jpg" alt="Imagen destacada">
+         <img loading="lazy" src="imagenes/<?php echo $propiedad['imagen'] ?>" alt="Imagen destacada">
       </picture>
 
       <div class="resumen-propiedad">
-         <p class="precio">$3, 000, 000.00</p>
+         <p class="precio">$<?php echo $propiedad['precio'] ?></p>
 
          <ul class="iconos-caracteristicas">
             <li>
                <img class="icono" src="build/img/icono_wc.svg" alt="Icono baño" loading="lazy">
-               <p>3</p>
+               <p><?php echo $propiedad['wc'] ?></p>
             </li>
             <li>
                <img class="icono" src="build/img/icono_estacionamiento.svg" alt="Icono estacionamiento" loading="lazy">
-               <p>3</p>
+               <p><?php echo $propiedad['estacionamiento'] ?></p>
             </li>
             <li>
                <img class="icono" src="build/img/icono_dormitorio.svg" alt="Icono habitaciones" loading="lazy">
-               <p>4</p>
+               <p><?php echo $propiedad['habitaciones'] ?></p>
             </li>
          </ul>
 
          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Mollitia odio aut ducimus porro reprehenderit,
-            labore soluta itaque vero minima ab hic a quis quia id, accusantium facere iusto laudantium placeat
-            expedita eveniet? Veritatis quia est id quo impedit sapiente harum architecto maiores sit, temporibus
-            ratione facere hic praesentium magnam explicabo rerum nobis! Saepe aut iusto dignissimos vero repudiandae
-            tempore mollitia, magni itaque dolorum odio illum quidem praesentium. Veniam delectus sunt consequuntur
-            quos. Nostrum asperiores nihil, nulla, totam exercitationem aspernatur error laborum reprehenderit
-            corrupti aliquid delectus omnis eum doloremque doloribus libero esse perferendis fugit dolores minus
-            quasi maxime. Repellendus, tempore eos?
-         </p>
-         
-         <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Mollitia odio aut ducimus porro reprehenderit,
-            labore soluta itaque vero minima ab hic a quis quia id, accusantium facere iusto laudantium placeat
-            expedita eveniet? Veritatis quia est id quo impedit sapiente harum architecto maiores sit, temporibus
-            ratione facere hic praesentium magnam explicabo rerum nobis! Saepe aut iusto dignissimos vero repudiandae
-            tempore mollitia, magni itaque dolorum odio illum quidem praesentium. Veniam delectus sunt consequuntur
+            <?php echo $propiedad['descripcion'] ?>
          </p>
       </div>
    </main>
 
-   <?php includeTemplate('footer'); ?>
+   <?php
+      mysqli_close($db); 
+      includeTemplate('footer'); 
+   ?>

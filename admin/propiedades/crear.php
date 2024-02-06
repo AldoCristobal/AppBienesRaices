@@ -1,4 +1,11 @@
-<?php 
+<?php
+   require '../../includes/funciones.php';
+   $auth = estaAutenticado();
+
+   if (!$auth) {
+      header("Location: ../../index.php");
+   }
+
    require '../../includes/config/database.php';
    $db = connDb();
 
@@ -19,16 +26,6 @@
 
    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-      // echo "<pre>";
-      //    var_dump($_POST);
-      // echo "</pre>";
-
-      // echo "<pre>";
-      //    var_dump($_FILES);
-      // echo "</pre>";
-
-      //exit;
-
       $titulo = mysqli_real_escape_string($db, $_POST['titulo']);
       $precio = mysqli_real_escape_string($db, $_POST['precio']);
       $descripcion = mysqli_real_escape_string($db, $_POST['descripcion']);
@@ -36,7 +33,6 @@
       $wc = mysqli_real_escape_string($db, $_POST['wc']);
       $estacionamiento = mysqli_real_escape_string($db, $_POST['estacionamiento']);
       $vendedor = mysqli_real_escape_string($db, isset($_POST['vendedor']));
-      //$img = mysqli_real_escape_string($db, $_POST['imagen']);
       $fecha = date('Y/m/d');
 
 
@@ -102,8 +98,6 @@
       }
       
    }   
-
-   require '../../includes/funciones.php';
    includeTemplate('header');
 ?>
 
